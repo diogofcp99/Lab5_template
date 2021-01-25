@@ -2,54 +2,44 @@ package com.pa.refactoring.model;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author patricia.macedo
  */
 public class ShoppingCart extends ArrayList<Product>{
 
-    private double total;
-    private int day, year,month,hour, minute;
+    private Time time;
     private boolean terminated;
+    private List<Product> products;
 
     public ShoppingCart() {
-        LocalDateTime d= LocalDateTime.now();
-        day=d.getDayOfMonth();
-        month=d.getMonthValue();
-        year=d.getYear();
-        hour=d.getHour();
-        minute =d.getMinute();
+        this.time = new Time();
         terminated=false;;
+        products = new ArrayList<>();
     }
 
+    public void addProduct(Product prd) {
+        products.add(prd);
+    }
+
+    public void removeProduct(Product prd) {
+        if(products.contains(prd))
+            products.remove(prd);
+    }
+
+    public List<Product> getProducts() {
+        return this.products;
+    }
 
     public double getTotal() {
-       total=0;
-        for (Product p : this) {
+        double total = 0;
+        for (Product p : products) {
             total += p.getCost();
         }
         return total;
     }
 
-    public int getDay() {
-        return day;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public int getMonth() {
-        return month;
-    }
-
-    public int getHour() {
-        return hour;
-    }
-
-    public int getMinute() {
-        return minute;
-    }
 
     public boolean isTerminated() {
         return terminated;
@@ -57,19 +47,13 @@ public class ShoppingCart extends ArrayList<Product>{
 
     public void terminate(){
 
+        time = new Time();
         terminated=true;
-        LocalDateTime d= LocalDateTime.now();
-        day=d.getDayOfMonth();
-        month=d.getMonthValue();
-        year=d.getYear();
-        hour=d.getHour();
-        minute =d.getMinute();
-
     }
 
 
     public String getDateStr() {
-      String  dateStr= String.format("%02d/%02d/%4d %02d:%02d", day,month,year,hour, minute);
+      String  dateStr= String.format("%02d/%02d/%4d %02d:%02d", time.getDay(),time.getMonth(),time.getYear(),time.getHour(), time.getMinute());
         return dateStr;
     }
 }
